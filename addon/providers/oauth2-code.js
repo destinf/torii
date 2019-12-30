@@ -148,7 +148,7 @@ var Oauth2 = Provider.extend({
 
     return this.get('popup').open(url, responseParams, options).then(function(authData){
       var missingResponseParams = [];
-      authObj = {
+      var authObj = {
         authorizationCode: authData[responseType],
         provider: name,
         redirectUri: redirectUri
