@@ -148,10 +148,17 @@ var Oauth2 = Provider.extend({
 
     return this.get('popup').open(url, responseParams, options).then(function(authData){
       var missingResponseParams = [];
+      authObj = {
+        authorizationCode: authData[responseType],
+        provider: name,
+        redirectUri: redirectUri
+      };
 
       responseParams.forEach(function(param){
         if (authData[param] === undefined) {
           missingResponseParams.push(param);
+        }else if(param !== responseType){
+          authObj[param] = authData[param];
         }
       });
 
@@ -166,11 +173,8 @@ var Oauth2 = Provider.extend({
                         'but is "' + authData.state + '"');
       }
 
-      return {
-        authorizationCode: decodeURIComponent(authData[responseType]),
-        provider: name,
-        redirectUri: redirectUri
-      };
+      return authObj;
+
     });
   }
 });
